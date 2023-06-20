@@ -71,6 +71,7 @@ namespace ProDesk_CaffePoltekSSN
                 Id = guid,
                 Username = username,
                 Email = email,
+                level = level,
                 Item = menu,
                 ItemPrice = menuPrice,
                 Size = size,
@@ -96,10 +97,12 @@ namespace ProDesk_CaffePoltekSSN
 
         private void ToCheckOut()
         {
+
             CheckOut co = new(
                 records[0].Id,
                 records[0].Username,
                 records[0].Email,
+                records[0].level,
                 records[0].Item,
                 records[0].ItemPrice,
                 records[0].Size,
@@ -237,7 +240,7 @@ namespace ProDesk_CaffePoltekSSN
             comboBox3.SelectedIndex = 0;
         }
 
-        private void UserPage_Load(object sender, EventArgs e)
+        private void AdminPage_Load(object sender, EventArgs e)
         {
             LoadProductList();
         }
@@ -245,7 +248,7 @@ namespace ProDesk_CaffePoltekSSN
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             Menu selectedMenu = (Menu)comboBox1.SelectedItem;
-            label7.Text = selectedMenu.Price.ToString("C", new CultureInfo("id-ID"));
+            label8.Text = selectedMenu.Price.ToString("C", new CultureInfo("id-ID"));
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)

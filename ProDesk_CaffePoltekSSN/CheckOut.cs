@@ -94,7 +94,6 @@ namespace ProDesk_CaffePoltekSSN
             label13.Visible = false;
             label15.Visible = false;
             label16.Visible = false;
-            MessageBox.Show(records[0].Icelvl);
         }
 
         private async void button2_Click(object sender, EventArgs e)
@@ -121,25 +120,6 @@ namespace ProDesk_CaffePoltekSSN
                 qrcodePath = @"..\net6.0-windows\qrcode\" + id+"_CaffePoltekSSN.png";
 
                 GenerateQrcode();
-
-                /*var emailCaffe = "atlantastuff100@gmail.com";
-
-                // Mengirim email dengan QR code sebagai lampiran menggunakan SendGrid
-                var apiKey = "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"; // Ganti dengan SendGrid API key Anda
-                var client = new SendGridClient(apiKey);
-                var from = new EmailAddress(emailCaffe, "Caffe PoltekSSN"); // Ganti dengan alamat email pengirim dan nama pengirim
-                var to = new EmailAddress(email, username); // Alamat email penerima diambil dari textBox1 dan nama penerima bisa diganti sesuai kebutuhan
-                var subject = "History Pemesanan";
-                var plainTextContent = "Terima kasih telah melakukan pemesanan melalui aplikasi Caffe PoltekSSN. silahkan tunjukkan barcode kepada kasir untuk mengambil pesanan.";
-                var htmlContent = "<strong>Ini adalah QR Code yang dihasilkan:</strong>";
-
-                var message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-                var bytes = File.ReadAllBytes(qrcodePath); // Membaca file QR code
-                var base64QRCode = Convert.ToBase64String(bytes);
-                message.AddAttachment("qr_code.png", base64QRCode); // Menambahkan QR code sebagai lampiran
-
-                var response = await client.SendEmailAsync(message);
-                MessageBox.Show("Email dengan QR Code telah terkirim.");*/
             }
             else
             {
@@ -184,7 +164,17 @@ namespace ProDesk_CaffePoltekSSN
             MessageBox.Show(status);
         }
 
-        
+        private bool CheckLevel()
+        {
+            if (level == "admin")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -194,10 +184,20 @@ namespace ProDesk_CaffePoltekSSN
 
         private void button3_Click(object sender, EventArgs e)
         {
-            UserPage user = new UserPage(username, email, level);
-            user.Closed += (s, args) => this.Close();
-            user.Show();
-            this.Hide();
+            if (CheckLevel())
+            {
+                AdminPage admin = new AdminPage(username, email, level);
+                admin.Closed += (s, args) => this.Close();
+                admin.Show();
+                this.Hide();
+            }
+            else
+            {
+                UserPage user = new UserPage(username, email, level);
+                user.Closed += (s, args) => this.Close();
+                user.Show();
+                this.Hide();
+            }
         }
     }
 }
